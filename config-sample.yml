@@ -1,7 +1,9 @@
-repo_url: https://github.com/some/project.git
-static_path: /var/www/project/storage
-release_path: /var/www/project/release
-symlink: /var/www/project/current
+repo_url: git@github.com:user/project.git
+static_path: /path/to/static
+release_path: /path/to/release
+symlink: /path/to/current
 deploy_user: www-data
 deploys_to_keep: 5
-#post_scripts: 'ls -la'
+post_scripts:
+    - 'ls -la'
+    - 'pwd'

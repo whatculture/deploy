@@ -108,9 +108,10 @@ class Deploy:
 
 		if self.config.has('post_scripts'):
 			self.console.success('Running post-scripts')
-			command = self.config.get('post_scripts').strip()
-			output = self.console.run(command.split(' '), cwd=deploy_path)
-			self.console.message(output)
+			commands = self.config.get('post_scripts')
+			for command in commands:
+				output = self.console.run([command], cwd=deploy_path)
+				self.console.message(output)
 
 		self.console.success('Updating file owner')
 		self.chown(deploy_path)
