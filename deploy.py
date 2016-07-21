@@ -107,6 +107,12 @@ class Deploy:
 			self.console.success('Copying static resources')
 			self.sync(self.path('static_path'), deploy_path)
 
+		self.console.success('Updating file owner')
+		self.chown(deploy_path)
+
+		self.console.success('Updating symlink')
+		self.linkdir(deploy_path, self.config.get('symlink'))
+
 		if self.config.has('post_scripts'):
 			self.console.success('Running post-scripts')
 			commands = self.config.get('post_scripts')
@@ -115,9 +121,5 @@ class Deploy:
 				if len(output):
 					self.console.message(output)
 
-		self.console.success('Updating file owner')
-		self.chown(deploy_path)
-		self.console.success('Updating symlink')
-		self.linkdir(deploy_path, self.config.get('symlink'))
 		self.console.success('Cleaning up old releases')
 		self.clean()
