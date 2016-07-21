@@ -17,7 +17,7 @@ class Deploy:
 		return os.path.abspath(path);
 
 	def chown(self, path):
-		user = self.config.get('dst', 'usr')
+		user = self.config.get('deploy_user')
 		self.console.run(['chown', '-R', user, path])
 
 	def linkdir(self, src, dst):
