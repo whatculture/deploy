@@ -2,6 +2,7 @@
 import os
 import sys
 import time
+import shlex
 
 from conf import Conf
 from console import Console
@@ -110,7 +111,7 @@ class Deploy:
 			self.console.success('Running post-scripts')
 			commands = self.config.get('post_scripts')
 			for command in commands:
-				output = self.console.run(command.split(' '), cwd=deploy_path)
+				output = self.console.run(shlex.split(command), cwd=deploy_path)
 				if len(output):
 					self.console.message(output)
 

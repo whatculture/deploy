@@ -1,5 +1,6 @@
 
 import sys
+import shlex
 import subprocess
 import os
 
@@ -14,7 +15,9 @@ class Console:
 	def error(self, message):
 		self.message('error: ' + message)
 
-	def run(self, command, cwd=None):
-		proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd)
+	def run(self, args, cwd=None):
+		proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd)
 		stdout, stderr = proc.communicate()
+		if len(stderr):
+			return stderr
 		return stdout
