@@ -81,7 +81,7 @@ class Deploy:
 
 		commands = self.config.get('post_scripts')
 		for command in commands:
-			command = command.replace('\{\{ deploy_path \}\}', deploy_path)
+			command = command.replace('$deploy_path', deploy_path)
 			output = self.console.run(shlex.split(command), cwd=deploy_path)
 			if len(output):
 				self.console.message(output)
