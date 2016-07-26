@@ -75,6 +75,17 @@ class Deploy:
 		self.console.success('Running gulp')
 		self.console.run(['node', 'node_modules/.bin/gulp'], cwd=deploy_path);
 
+	def scripts(self, deploy_path):
+		if self.config.has('post_scripts') == False:
+			return
+
+		commands = self.config.get('post_scripts')
+		for command in commands:
+			command.replace('\{\{ deploy_path \}\}', deploy_path)
+			output = self.console.run(shlex.split(command), cwd=deploy_path)
+			if len(output):
+				self.console.message(output)
+
 	def clean(self):
 		release_path = self.path('release_path')
 		deployments = self.console.run(['ls', '-1tA', release_path])
@@ -113,14 +124,8 @@ class Deploy:
 		self.console.success('Updating symlink')
 		self.linkdir(deploy_path, self.config.get('symlink'))
 
-		if self.config.has('post_scripts'):
-			self.console.success('Running post-scripts')
-			commands = self.config.get('post_scripts')
-			for command in commands:
-				command.replace('{{ deploy_path }}', deploy_path)
-				output = self.console.run(shlex.split(command), cwd=deploy_path)
-				if len(output):
-					self.console.message(output)
+		self.console.success('Running post-scripts')
+		self.scripts(deploy_path)
 
 		self.console.success('Cleaning up old releases')
 		self.clean()
