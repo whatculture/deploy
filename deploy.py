@@ -47,7 +47,16 @@ class Deploy:
 			os.makedirs(deploy_path, 0755)
 
 		self.console.success('Fetching files')
-		self.console.run(['git', 'clone', '--depth', '1', self.config.get('repo_url'), deploy_path])
+		self.console.run([
+			'git',
+			'clone',
+			'--quiet',
+			'--recursive',
+			'--depth', '1',
+			'--branch', 'master',
+			self.config.get('repo_url'),
+			deploy_path
+		])
 
 		return deploy_path
 
