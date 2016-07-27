@@ -10,10 +10,10 @@ class Console:
 		sys.stdout.write(message.strip() + "\n")
 
 	def success(self, message):
-		self.message('\e[32m--> \e[39m' + message)
+		self.message("\e[32m--> \e[39m" + message)
 
 	def error(self, message):
-		self.message('\e[31merror: \e[39m' + message)
+		self.message("\e[31merror: \e[39m" + message)
 
 	def run(self, args, cwd=None):
 		self.message('command --> ' + ' '.join(args))
