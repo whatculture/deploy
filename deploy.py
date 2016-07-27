@@ -36,9 +36,6 @@ class Deploy:
 			'--checksum',
 			'--whole-file',
 			'--recursive',
-			'--exclude=".git"',
-			'--exclude=".gitignore"',
-			'--exclude=".gitmodules"',
 			src.rstrip('/') + '/',
 			dst
 		])
