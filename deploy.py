@@ -79,12 +79,11 @@ class Deploy:
 		if self.config.has('post_scripts') == False:
 			return
 
-		commands = self.config.get('post_scripts')
-		for command in commands:
-			command = command.replace('$deploy_path', deploy_path)
-			output = self.console.run(shlex.split(command), cwd=deploy_path)
-			if len(output):
-				self.console.message(output)
+		scripts = self.config.get('post_scripts')
+
+		for line in scripts:
+			command = line.replace('$deploy_path', deploy_path)
+			self.console.run(shlex.split(command), cwd=deploy_path)
 
 	def clean(self):
 		release_path = self.path('release_path')
