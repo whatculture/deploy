@@ -131,14 +131,14 @@ class Deploy:
 			self.console.success('Copying static resources')
 			self.sync(self.path('static_path'), deploy_path)
 
-		self.console.success('Updating symlink')
-		self.linkdir(deploy_path, self.config.get('symlink'))
-
 		self.console.success('Running post-scripts')
 		self.scripts(deploy_path)
 
 		self.console.success('Updating file owner')
 		self.chown(deploy_path)
+
+		self.console.success('Updating symlink')
+		self.linkdir(deploy_path, self.config.get('symlink'))
 
 		self.console.success('Cleaning up old releases')
 		self.clean()
