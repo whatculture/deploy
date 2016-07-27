@@ -21,3 +21,4 @@ class Console:
 		stdout, stderr = proc.communicate()
 		self.message('stderr --> ' + stderr)
 		self.message('stdout --> ' + stderr)
+		return stderr
