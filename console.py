@@ -16,7 +16,7 @@ class Console:
 		self.message('error: ' + message)
 
 	def run(self, args, cwd=None):
-		self.message('command --> ' + args.join(' '))
+		self.message('command --> ' + ' '.join(args))
 		proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd)
 		stdout, stderr = proc.communicate()
 		self.message('stderr --> ' + stderr)
