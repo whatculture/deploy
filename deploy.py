@@ -89,11 +89,11 @@ class Deploy:
 		self.console.success('Running gulp')
 		self.console.run(['node', 'node_modules/.bin/gulp'], cwd=deploy_path);
 
-	def scripts(self, deploy_path):
-		if self.config.has('post_scripts') == False:
+	def scripts(self, scripts_to_run, deploy_path):
+		if self.config.has(scripts_to_run) == False:
 			return
 
-		scripts = self.config.get('post_scripts')
+		scripts = self.config.get(scripts_to_run)
 
 		for line in scripts:
 			command = line.replace('$deploy_path', deploy_path)
@@ -131,14 +131,17 @@ class Deploy:
 			self.console.success('Copying static resources')
 			self.sync(self.path('static_path'), deploy_path)
 
-		self.console.success('Running post-scripts')
-		self.scripts(deploy_path)
+		self.console.success('Running pre-scripts')
+		self.scripts('pre_scripts', deploy_path)
 
 		self.console.success('Updating file owner')
 		self.chown(deploy_path)
 
 		self.console.success('Updating symlink')
 		self.linkdir(deploy_path, self.config.get('symlink'))
+
+		self.console.success('Running post-scripts')
+		self.scripts('post_scripts', deploy_path)
 
 		self.console.success('Cleaning up old releases')
 		self.clean()

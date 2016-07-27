@@ -4,6 +4,9 @@ release_path: /path/to/release
 symlink: /path/to/current
 deploy_user: www-data
 deploys_to_keep: 5
+pre_scripts:
+    - 'ls -la'
+    - 'pwd'
 post_scripts:
     - 'ls -la'
     - 'pwd'
