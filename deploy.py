@@ -56,7 +56,15 @@ class Deploy:
 			return None
 
 		self.console.success('Installing composer dependencies')
-		self.console.run(['composer', '--quiet', '--no-interaction', 'install', '--prefer-dist', '--no-dev', '-o'], cwd=deploy_path);
+		self.console.run([
+			'composer',
+			'--quiet',
+			'--no-interaction',
+			'install',
+			'--prefer-dist',
+			'--no-dev',
+			'--optimize-autoloader'
+		], cwd=deploy_path);
 
 	def packages(self, deploy_path):
 		if os.path.exists(deploy_path + '/package.json') == False:
