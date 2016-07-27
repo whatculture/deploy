@@ -19,4 +19,6 @@ class Console:
 		self.message('$ ' + ' '.join(args))
 		proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd)
 		stdout, stderr = proc.communicate()
+		if len(stderr):
+			self.error(stderr)
 		return stdout

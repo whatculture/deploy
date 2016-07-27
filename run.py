@@ -14,4 +14,8 @@ if __name__ == "__main__":
 
 	d = Deploy()
 	d.config.read(config_path)
-	d.deploy();
+
+	if len(sys.argv) == 3:
+		d.rollback(sys.argv[2])
+	else:
+		d.deploy()
