@@ -4,6 +4,7 @@ import os
 import sys
 
 from deploy import Deploy
+from console import Console
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
@@ -15,7 +16,11 @@ if __name__ == "__main__":
 	d = Deploy()
 	d.config.read(config_path)
 
-	if len(sys.argv) == 3:
-		d.rollback(sys.argv[2])
-	else:
-		d.deploy()
+	try:
+		if len(sys.argv) == 3:
+			d.rollback(sys.argv[2])
+		else:
+			d.deploy()
+	except RuntimeError, e:
+		c = Console()
+		c.error(str(e))
