@@ -80,7 +80,7 @@ class Deploy:
 			return None
 
 		self.console.success('Installing npm dependencies')
-		self.console.run(['npm', 'install', '--production'], cwd=deploy_path);
+		self.console.run(['npm', 'install', '--quiet', '--production'], cwd=deploy_path);
 
 	def gulp(self, deploy_path):
 		if os.path.exists(deploy_path + '/gulpfile.js') == False:
