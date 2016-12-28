@@ -40,7 +40,7 @@ class Deploy:
 			dst
 		])
 
-	def checkout(self):
+	def checkout(self, branch):
 		deploy_path = self.path('release_path') + '/' + time.strftime('%Y%m%d%H%M%S')
 
 		if os.path.exists(deploy_path) == False:
@@ -53,7 +53,7 @@ class Deploy:
 			'--quiet',
 			'--recursive',
 			'--depth', '1',
-			'--branch', 'master',
+			'--branch', branch,
 			self.config.get('repo_url'),
 			deploy_path
 		])
@@ -80,7 +80,8 @@ class Deploy:
 			return None
 
 		self.console.success('Installing npm dependencies')
-		self.console.run(['npm', 'install', '--silent', '--production'], cwd=deploy_path);
+		self.console.run(['npm', 'install', '--silent'], cwd=deploy_path);
+		#self.console.run(['npm', 'install', '--silent', '--production'], cwd=deploy_path);
 
 	def gulp(self, deploy_path):
 		if os.path.exists(deploy_path + '/gulpfile.js') == False:
@@ -117,9 +118,10 @@ class Deploy:
 		self.console.success('Rolling back')
 		self.linkdir(deploy_path, self.config.get('symlink'))
 
-	def deploy(self):
+	def deploy(self, branch="master"):
+		
 		# checkout files
-		deploy_path = self.checkout()
+		deploy_path = self.checkout(branch)
 
 		# fetch resources
 		self.composer(deploy_path)
