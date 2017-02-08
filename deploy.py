@@ -75,6 +75,16 @@ class Deploy:
 			'--optimize-autoloader'
 		], cwd=deploy_path);
 
+	def bower(self, deploy_path):
+		if os.path.exists(deploy_path + '/bower.json') == False:
+			return None
+
+		self.console.success('Installing bower dependencies')
+		self.console.run([
+			'bower',
+			'install'
+		], cwd=deploy_path);
+
 	def packages(self, deploy_path):
 		if os.path.exists(deploy_path + '/package.json') == False:
 			return None
@@ -119,12 +129,13 @@ class Deploy:
 		self.linkdir(deploy_path, self.config.get('symlink'))
 
 	def deploy(self, branch="master"):
-		
+
 		# checkout files
 		deploy_path = self.checkout(branch)
 
 		# fetch resources
 		self.composer(deploy_path)
+		self.bower(deploy_path)
 		self.packages(deploy_path)
 		self.gulp(deploy_path)
 
