@@ -135,8 +135,8 @@ class Deploy:
 
 		# fetch resources
 		self.composer(deploy_path)
-		self.bower(deploy_path)
 		self.packages(deploy_path)
+		self.bower(deploy_path)
 		self.gulp(deploy_path)
 
 		# static resources
