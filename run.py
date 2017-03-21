@@ -37,7 +37,7 @@ if __name__ == "__main__":
 		# deploy master
 		else:
 
-			print "deply master branch"
+			print "deploy master branch"
 			print "----- ------ ------"
 
 			d.deploy()
