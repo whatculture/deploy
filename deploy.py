@@ -82,7 +82,8 @@ class Deploy:
 		self.console.success('Installing bower dependencies')
 		self.console.run([
 			'bower',
-			'install'
+			'install',
+			'--allow-root'
 		], cwd=deploy_path);
 
 	def packages(self, deploy_path):
