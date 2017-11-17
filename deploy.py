@@ -36,6 +36,9 @@ class Deploy:
 			'--checksum',
 			'--whole-file',
 			'--recursive',
+			'--exclude=".git"',
+			'--exclude=".gitignore"',
+			'--exclude=".gitmodules"',
 			src.rstrip('/') + '/',
 			dst
 		])
@@ -65,15 +68,24 @@ class Deploy:
 			return None
 
 		self.console.success('Installing composer dependencies')
-		self.console.run([
-			'composer',
-			'--quiet',
-			'--no-interaction',
-			'install',
-			'--prefer-dist',
-			'--no-dev',
-			'--optimize-autoloader'
-		], cwd=deploy_path);
+		if (self.config.has('wcpw') == True) or (self.config.has('wearedefiant') == True):
+			self.console.run([
+				'composer',
+				'--quiet',
+				'--no-interaction',
+				'install',
+				'--no-dev',
+			'-o'], cwd=deploy_path);
+		else:
+			self.console.run([
+				'composer',
+				'--quiet',
+				'--no-interaction',
+				'install',
+				'--prefer-dist',
+				'--no-dev',
+				'--optimize-autoloader'
+			], cwd=deploy_path);
 
 	def bower(self, deploy_path):
 		if os.path.exists(deploy_path + '/bower.json') == False:
@@ -91,8 +103,10 @@ class Deploy:
 			return None
 
 		self.console.success('Installing npm dependencies')
-		self.console.run(['npm', 'install', '--silent'], cwd=deploy_path);
-		#self.console.run(['npm', 'install', '--silent', '--production'], cwd=deploy_path);
+		if (self.config.has('wcpw') == True) or (self.config.has('wearedefiant') == True):
+			self.console.run(['npm', 'install', '--silent'], cwd=deploy_path);
+		else:
+			self.console.run(['npm', 'install', '--silent', '--production'], cwd=deploy_path);
 
 	def gulp(self, deploy_path):
 		if os.path.exists(deploy_path + '/gulpfile.js') == False:
@@ -119,18 +133,7 @@ class Deploy:
 		for folder in deployments.splitlines()[deploys_to_keep:]:
 			self.console.run(['rm', '-rf', folder], cwd=release_path);
 
-	def rollback(self, version):
-		deploy_path = self.path('release_path') + '/' + version
-
-		if os.path.exists(deploy_path) == False:
-			self.console.error('Version does not exist')
-			return None
-
-		self.console.success('Rolling back')
-		self.linkdir(deploy_path, self.config.get('symlink'))
-
 	def deploy(self, branch="master"):
-
 		# checkout files
 		deploy_path = self.checkout(branch)
 
